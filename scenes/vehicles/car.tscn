@@ -1,0 +1,58 @@
+[gd_scene load_steps=5 format=3 uid="uid://b2sqib07xmpxj"]
+
+[ext_resource type="Texture2D" uid="uid://dt25qisefj1nl" path="res://graphics/car/main.png" id="1_t6ig6"]
+[ext_resource type="Texture2D" uid="uid://ck48pyb1ilt0u" path="res://graphics/car/turret.png" id="2_bw31n"]
+
+[sub_resource type="GDScript" id="GDScript_rscf1"]
+script/source = "extends CharacterBody2D
+var vehicle_pos: Vector2 = Vector2.ZERO
+var vehicle_current_speed: int = 0
+const vehicle_max_speed: int = 120
+func _process(delta):
+	if Input.is_action_pressed(\"left\"):
+		vehicle_current_speed += 2
+		rotation_degrees -= 1
+		vehicle_pos = Vector2.LEFT
+		velocity = vehicle_pos * vehicle_current_speed
+	if Input.is_action_pressed(\"right\"):
+		vehicle_current_speed += 2
+		rotation_degrees += 1
+		vehicle_pos = Vector2.RIGHT
+		velocity = vehicle_pos * vehicle_current_speed
+		move_and_slide()
+	if Input.is_action_pressed(\"up\"):
+		vehicle_current_speed += 5
+		vehicle_pos = Vector2.UP
+		velocity = vehicle_pos * vehicle_current_speed
+		move_and_slide()
+	if Input.is_action_pressed(\"down\"):
+		vehicle_current_speed += 3
+		vehicle_pos = Vector2.DOWN
+		velocity = vehicle_pos * vehicle_current_speed
+		move_and_slide()
+	if Input.is_action_pressed(\"\"):
+		vehicle_current_speed -= 3
+	
+	
+	
+	
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q652d"]
+size = Vector2(356, 490)
+
+[node name="Car" type="CharacterBody2D"]
+script = SubResource("GDScript_rscf1")
+
+[node name="CarImage" type="Sprite2D" parent="."]
+position = Vector2(3, -109)
+texture = ExtResource("1_t6ig6")
+
+[node name="CarTurret" type="Sprite2D" parent="CarImage"]
+texture = ExtResource("2_bw31n")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-3, -54)
+shape = SubResource("RectangleShape2D_q652d")
+
+[node name="Camera2D" type="Camera2D" parent="."]

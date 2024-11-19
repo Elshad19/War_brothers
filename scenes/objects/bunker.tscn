@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://kml11esid31u"]
+
+[ext_resource type="Script" path="res://scenes/objects/bunker.gd" id="1_nol7l"]
+[ext_resource type="Texture2D" uid="uid://cj5rtgs3ljfc3" path="res://graphics/objects/gate.png" id="1_vrof7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sovpo"]
+size = Vector2(854.5, 149)
+
+[node name="Bunker" type="StaticBody2D"]
+collision_layer = 4
+collision_mask = 13
+script = ExtResource("1_nol7l")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-16, 185)
+texture = ExtResource("1_vrof7")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(45, 890.5)
+shape = SubResource("RectangleShape2D_sovpo")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-1453, -595, -1453, 723, -1449, 752, -1444, 776, -1432, 810, -1420, 832, -1404, 858, -1389, 877, -1369, 897, -1344, 917, -1322, 931, -1292, 945, -1270, 953, -1243, 959, -1231, 961, -1219, 963, -1205, 964, -382, 963, -382, 829, -371, 812, -355, 795, -336, 785, -314, 782, -243, 782, -90, 782, 412, 781, 436, 789, 460, 809, 470, 827, 472, 839, 472, 903, 473, 904, 473, 911, 473, 964, 1320, 962, 1365, 952, 1410, 932, 1438, 914, 1466, 891, 1492, 863, 1512, 832, 1527, 799, 1537, 766, 1543, 732, 1544, 713, 1544, -595)
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

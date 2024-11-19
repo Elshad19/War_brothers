@@ -1,0 +1,152 @@
+[gd_scene load_steps=10 format=3 uid="uid://qjbvaw1v02k3"]
+
+[ext_resource type="Script" path="res://scenes/Projectiles/grenade_restock.gd" id="1_kmgyw"]
+[ext_resource type="Texture2D" uid="uid://cc0kyu0yhntac" path="res://graphics/projectiles/grenade.png" id="1_n4hch"]
+[ext_resource type="Texture2D" uid="uid://c8op2q2ubhbww" path="res://graphics/lights/textures/circle.png" id="3_pxbw2"]
+[ext_resource type="Theme" uid="uid://b1d2fxqapg7h" path="res://scenes/UI/new_theme.tres" id="4_7s402"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4j25f"]
+radius = 202.0
+
+[sub_resource type="Animation" id="Animation_jo3p5"]
+resource_name = "Number fade"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Label:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-61, -129), Vector2(-61, -209)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_boccd"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Label:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-46, -96)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ty0rd"]
+resource_name = "Scale up"
+length = 0.8
+loop_mode = 1
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_43y2h"]
+_data = {
+"Number fade": SubResource("Animation_jo3p5"),
+"RESET": SubResource("Animation_boccd"),
+"Scale up": SubResource("Animation_ty0rd")
+}
+
+[node name="Grenade Restock" type="Area2D"]
+collision_layer = 16
+script = ExtResource("1_kmgyw")
+
+[node name="Grenades" type="Node2D" parent="."]
+
+[node name="GrenadeSprite" type="Sprite2D" parent="Grenades"]
+position = Vector2(-5, -19)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("1_n4hch")
+
+[node name="GrenadeSprite2" type="Sprite2D" parent="Grenades"]
+position = Vector2(35, 20)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("1_n4hch")
+
+[node name="GrenadeSprite3" type="Sprite2D" parent="Grenades"]
+position = Vector2(-32, 26)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("1_n4hch")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, 1)
+shape = SubResource("CircleShape2D_4j25f")
+metadata/_edit_lock_ = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_43y2h")
+}
+autoplay = "Scale up"
+speed_scale = 0.4
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(0, 0.486092, 0.486095, 1)
+energy = 10.0
+texture = ExtResource("3_pxbw2")
+texture_scale = 0.5
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="."]
+offset_left = -61.0
+offset_top = -129.0
+offset_right = 69.0
+offset_bottom = -91.0
+scale = Vector2(3, 3)
+theme = ExtResource("4_7s402")
+text = "+ 3 grenades"
+horizontal_alignment = 1
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

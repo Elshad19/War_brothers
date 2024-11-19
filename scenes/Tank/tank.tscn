@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://selkdprb20i7"]
+
+[ext_resource type="Script" path="res://scenes/Tank/tank.gd" id="1_vl4qu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dtr5a"]
+size = Vector2(704, 312)
+
+[node name="Tank" type="CharacterBody2D"]
+script = ExtResource("1_vl4qu")
+
+[node name="Tank_body" type="Sprite2D" parent="."]
+
+[node name="Turret" type="Sprite2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_dtr5a")

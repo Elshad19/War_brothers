@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://dd44gj2pcxf2t"]
+
+[ext_resource type="Script" path="res://scenes/Projectiles/laser.gd" id="1_va3xh"]
+[ext_resource type="Texture2D" uid="uid://cnyvqycp8wp4o" path="res://graphics/projectiles/blue.png" id="2_mafy0"]
+[ext_resource type="Texture2D" uid="uid://c8op2q2ubhbww" path="res://graphics/lights/textures/circle.png" id="3_hieep"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_byhqb"]
+radius = 6.0
+height = 42.0
+
+[node name="Laser" type="Area2D"]
+rotation = 1.5708
+collision_layer = 8
+collision_mask = 6
+script = ExtResource("1_va3xh")
+
+[node name="LaserSprite" type="Sprite2D" parent="."]
+position = Vector2(-0.999997, 57)
+texture = ExtResource("2_mafy0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1.31134e-07, -3)
+rotation = -3.14159
+shape = SubResource("CapsuleShape2D_byhqb")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(0.388788, 0.504547, 0.886852, 1)
+texture = ExtResource("3_hieep")
+
+[node name="SelfDestructTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="child_entered_tree" from="SelfDestructTimer" to="." method="_on_timer_child_entered_tree"]
+[connection signal="timeout" from="SelfDestructTimer" to="." method="_on_self_destruct_timer_timeout"]
+[connection signal="tree_entered" from="SelfDestructTimer" to="." method="_on_timer_tree_entered"]

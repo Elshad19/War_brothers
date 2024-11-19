@@ -1,0 +1,77 @@
+[gd_scene load_steps=6 format=3 uid="uid://duvb5djr0iwwp"]
+
+[ext_resource type="Texture2D" uid="uid://dwl10orlwlwlj" path="res://graphics/player/player.png" id="1_41x1h"]
+[ext_resource type="Script" path="res://scenes/player/player.gd" id="1_bufxq"]
+[ext_resource type="Texture2D" uid="uid://c8op2q2ubhbww" path="res://graphics/lights/textures/circle.png" id="3_t68sm"]
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_dl7jl"]
+polygon = PackedVector2Array(-27, 43, -43, 38, -54, 16, -60, 11, -63, 4, -61, -1, -65, -5, -69, -12, -70, -20, -70, -38, -64, -47, -63, -54, -53, -63, -40, -64, -33, -72, 5, -76, 12, -78, 19, -74, 23, -69, 24.3918, -64.2715, 30, -61, 33, -58, 34, -53, 37, -46, 44, -46, 51, -42, 59, -34, 65, -27, 76, -28, 81, -25, 89, -21, 98, -19, 101, -15, 112, -15, 113, -13, 112, -11, 111, -10, 112, -8, 115, -11, 119, -10, 122, -4, 123, 1, 122, 6, 121, 12, 117, 16, 110, 14, 111, 19, 97, 19, 91, 24, 85, 27, 83, 35, 58, 36, 53, 35, 49, 33, 48, 29, 51, 23, 36, 23, 23, 26, 10, 31, -6, 40)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_dsi7k"]
+polygon = PackedVector2Array(119, 14, 118, 13, 116, 13, 113, 13, 110, 14, 109, 16, 110, 18, 109, 19, 110, 20, 110, 21, 111, 22, 112, 22, 113, 22, 119, 18, 113, 18)
+
+[node name="Player" type="CharacterBody2D"]
+position = Vector2(101, 48)
+collision_mask = 31
+script = ExtResource("1_bufxq")
+
+[node name="PlayerSprite" type="Sprite2D" parent="."]
+position = Vector2(26, -17)
+rotation = 1.5708
+texture = ExtResource("1_41x1h")
+metadata/_edit_lock_ = true
+
+[node name="Camera2D" type="Camera2D" parent="PlayerSprite"]
+zoom = Vector2(0.4, 0.4)
+position_smoothing_enabled = true
+
+[node name="LaserTimer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
+[node name="GrenadeTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="Gun_markers" type="Node2D" parent="."]
+position = Vector2(0, -1)
+metadata/_edit_lock_ = true
+
+[node name="LaserPos1" type="Marker2D" parent="Gun_markers"]
+position = Vector2(126, 2)
+
+[node name="LaserPos2" type="Marker2D" parent="Gun_markers"]
+position = Vector2(126, -6)
+rotation = 0.523598
+
+[node name="LaserPos3" type="Marker2D" parent="Gun_markers"]
+position = Vector2(126, 12)
+rotation = 0.523598
+
+[node name="Smokepos" type="Marker2D" parent="Gun_markers"]
+position = Vector2(130, 2)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+position = Vector2(0, 1)
+polygon = PackedVector2Array(-22, 43, -34, 42, -41, 39, -46, 34, -47, 28, -52, 20, -53, 9, -45, -11, -42, -36, -35, -51, -25, -58, -30, -64, -27, -68, -19, -75, -9, -78, 2, -78, 10, -80, 17, -77, 25, -67, 33, -57, 37, -48, 53, -42, 64, -30, 71, -28, 79, -28, 86, -23, 91, -22, 96, -22, 99, -20, 100, -17, 113, -17, 113, -14, 111, -10, 117, -12, 121, -9, 122, -4, 123, 0, 123, 2, 123, 6, 121, 9, 120, 12, 118, 14, 115, 15, 113, 13, 111, 13, 111, 18, 101, 18, 98, 16, 94, 20, 92, 23, 89, 25, 86, 26, 86, 29, 84, 32, 82, 34, 77, 34, 68, 35, 57, 35, 51, 34, 49, 32, 48, 27, 33, 23, 19, 28, 5, 35, -7, 38)
+metadata/_edit_lock_ = true
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_dl7jl")
+
+[node name="LightOccluder2D2" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_dsi7k")
+occluder_light_mask = 2
+
+[node name="Flashlight" type="PointLight2D" parent="."]
+position = Vector2(116, 17)
+energy = 10.0
+shadow_enabled = true
+shadow_filter = 1
+shadow_item_cull_mask = 3
+texture = ExtResource("3_t68sm")
+texture_scale = 1.5
+
+[connection signal="timeout" from="LaserTimer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="GrenadeTimer" to="." method="_on_grenade_timer_timeout"]
+[connection signal="timeout" from="GrenadeTimer" to="." method="_on_timer_timeout"]

@@ -1,0 +1,156 @@
+[gd_scene load_steps=9 format=3 uid="uid://b1es6m1f4xrm1"]
+
+[ext_resource type="Texture2D" uid="uid://qykmtb4qnroh" path="res://graphics/enemies/drone.png" id="1_o1a8k"]
+[ext_resource type="Texture2D" uid="uid://cm73wfh0kt2uh" path="res://graphics/explosions/explosion_2.png" id="2_qfi0a"]
+[ext_resource type="Texture2D" uid="uid://c8op2q2ubhbww" path="res://graphics/lights/textures/circle.png" id="3_nnecw"]
+
+[sub_resource type="GDScript" id="GDScript_p7yrp"]
+script/source = "extends CharacterBody2D
+@export var health = 100
+@onready var anim = $Destroyed
+func _process(_delta):
+	var direction = Vector2.RIGHT
+	velocity = direction * 200
+	move_and_slide()
+	if health > 0:
+		$Destroyed2.visible = false
+		$PointLight2D.enabled = false
+func hit():
+	print(\"enemy damaged\")
+	if health == 0 or health < 0:
+		$Destroyed2.visible = true
+		$PointLight2D.enabled = true
+		$Destroyed.play(&\"Destroyed\")
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wkluh"]
+radius = 65.9242
+
+[sub_resource type="Animation" id="Animation_n4gdu"]
+resource_name = "Destroyed"
+length = 1.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Destroyed2:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.166667, 0.2, 0.233333, 0.266667, 0.3, 0.333333, 0.366667, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [2, 5, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34, 37]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:drone_health")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("PointLight2D:energy")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [1.0, 20.0, 1.0]
+}
+
+[sub_resource type="Animation" id="Animation_1y1py"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:drone_health")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [100]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Destroyed2:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [27]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PointLight2D:energy")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_q5s4i"]
+_data = {
+"Destroyed": SubResource("Animation_n4gdu"),
+"RESET": SubResource("Animation_1y1py")
+}
+
+[node name="Drone" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 15
+script = SubResource("GDScript_p7yrp")
+
+[node name="DroneImage" type="Sprite2D" parent="."]
+position = Vector2(-1, -5)
+texture = ExtResource("1_o1a8k")
+
+[node name="DroneCollision" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_wkluh")
+
+[node name="Destroyed" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_q5s4i")
+}
+speed_scale = 0.7
+
+[node name="Destroyed2" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.376471)
+scale = Vector2(4, 4)
+texture = ExtResource("2_qfi0a")
+hframes = 8
+vframes = 8
+frame = 27
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(0.71902, 0.366843, 0.033562, 1)
+texture = ExtResource("3_nnecw")

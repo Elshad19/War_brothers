@@ -1,0 +1,49 @@
+[gd_scene load_steps=7 format=3 uid="uid://dsq2eetgsxafq"]
+
+[ext_resource type="PackedScene" uid="uid://selkdprb20i7" path="res://scenes/Tank/tank.tscn" id="1_0pn2y"]
+[ext_resource type="Texture2D" uid="uid://ih6j15fdc2t6" path="res://graphics/Tanks/USMC_Museum__sherman_tank_top_view colored.jpg" id="1_4rwaa"]
+[ext_resource type="Script" path="res://sherman_tank.gd" id="2_mgd0k"]
+[ext_resource type="Texture2D" uid="uid://df8p8vt121f78" path="res://graphics/Tanks/USMC_Museum__sherman_tank_turret colored.png" id="4_3ih0t"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wb844"]
+size = Vector2(412, 514)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2iexl"]
+
+[node name="Sherman_tank" instance=ExtResource("1_0pn2y")]
+collision_mask = 62
+script = ExtResource("2_mgd0k")
+
+[node name="Tank_body" parent="." index="0"]
+position = Vector2(-146, 0)
+texture = ExtResource("1_4rwaa")
+
+[node name="Turret" parent="." index="1"]
+position = Vector2(-145, 0)
+texture = ExtResource("4_3ih0t")
+
+[node name="CollisionShape2D" parent="." index="2"]
+position = Vector2(-145, 0)
+
+[node name="Camera2D" type="Camera2D" parent="." index="3"]
+zoom = Vector2(0.4, 0.4)
+
+[node name="Tank_enter" type="Area2D" parent="." index="4"]
+collision_layer = 64
+collision_mask = 30
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tank_enter" index="0"]
+shape = SubResource("RectangleShape2D_wb844")
+
+[node name="Aim" type="StaticBody2D" parent="." index="5"]
+collision_layer = 128
+collision_mask = 127
+
+[node name="Aim_camera" type="Camera2D" parent="Aim" index="0"]
+position_smoothing_enabled = true
+position_smoothing_speed = 3.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Aim" index="1"]
+shape = SubResource("RectangleShape2D_2iexl")
+
+[connection signal="body_entered" from="Tank_enter" to="." method="_on_tank_enter_body_entered"]
