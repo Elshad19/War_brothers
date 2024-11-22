@@ -33,7 +33,7 @@ func _process(_delta):
 	if Input.is_action_pressed("primary_action") and can_laser and Globals.player_laser_amount > 0:
 		#laser marker
 		var selected_laser_marker = $Gun_markers.get_children()[3].global_position
-		var selected_laser_particle_marker = $Gun_markers.get_children()[3].global_position
+		var _selected_laser_particle_marker = $Gun_markers.get_children()[3].global_position
 		#laser cooldown
 		can_laser = false
 		$LaserTimer.start()

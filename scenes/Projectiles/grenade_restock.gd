@@ -4,7 +4,7 @@ var amount: int = 3
 
 func _ready():
 	grenade_pickup_label.text = " "
-func _process(delta):
+func _process(_delta):
 	$Grenades.rotate(90)
 func update_grenade_pickup_text(amount):
 	if amount == 1:
@@ -12,7 +12,7 @@ func update_grenade_pickup_text(amount):
 	else:
 		grenade_pickup_label.text = ("+ " + str(amount) + " grenades")
 	$AnimationPlayer.play("Number fade")
-func _on_body_entered(body):
+func _on_body_entered(_body):
 	if Globals.player_grenade_amount <= Globals.player_max_grenade_amount - 3:
 		print(str(amount) + " grenades picked.")
 		Globals.player_grenade_amount += amount

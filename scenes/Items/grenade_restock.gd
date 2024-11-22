@@ -1,7 +1,7 @@
 extends Area2D
 var amount: int = 3
 
-func _on_body_entered(body):
+func _on_body_entered(_body):
 	if Globals.player_grenade_amount <= Globals.player_max_grenade_amount - 3:
 		print(str(amount) + " grenades picked.")
 		Globals.player_grenade_amount += amount
