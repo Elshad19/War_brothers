@@ -73,5 +73,5 @@ texture = ExtResource("3_t68sm")
 texture_scale = 1.5
 
 [connection signal="timeout" from="LaserTimer" to="." method="_on_timer_timeout"]
-[connection signal="timeout" from="GrenadeTimer" to="." method="_on_grenade_timer_timeout"]
 [connection signal="timeout" from="GrenadeTimer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="GrenadeTimer" to="." method="_on_grenade_timer_timeout"]
