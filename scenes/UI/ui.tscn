@@ -60,7 +60,7 @@ offset_bottom = 67.0
 [node name="Label" type="Label" parent="GrenadePointer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("2_0on5k")
-text = "3"
+text = "12"
 horizontal_alignment = 1
 
 [node name="grenade_pic" type="TextureRect" parent="GrenadePointer/VBoxContainer"]

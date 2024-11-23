@@ -15,7 +15,7 @@ func _process(delta):
 	elif chosen_option == available_options[2]:
 		$grenade.visible = true
 		$Sprite2D.modulate = Color(0, 6, 0)
-	else :
+	else:
 		$Sprite2D.modulate = Color(10, 3, 3)
 func update_pickup_text(amount):
 	if chosen_option == available_options[0]:

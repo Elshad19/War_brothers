@@ -6,6 +6,9 @@ extends CanvasLayer
 @onready var grenade_picture = $GrenadePointer/VBoxContainer/grenade_pic
 @onready var player_health_ui = $Health_bar
 
+func _ready():
+	Globals.connect("update_ui_stats", update_stats_text)
+
 func update_laser_text():
 	laser_label.text = str(Globals.player_laser_amount)
 	update_color(Globals.player_laser_amount, laser_label, laser_picture)
@@ -13,6 +16,7 @@ func update_grenade_text():
 	grenade_label.text = str(Globals.player_grenade_amount)
 	update_color(Globals.player_grenade_amount, grenade_label, grenade_picture)
 func update_health_bar():
+	$Health_bar.min_value = 0
 	$Health_bar.value = Globals.player_health
 	$Health_bar.max_value = Globals.max_player_health
 func update_color(amount: int, label: Label, icon: TextureRect) -> void:
@@ -22,3 +26,7 @@ func update_color(amount: int, label: Label, icon: TextureRect) -> void:
 	else:
 		label.modulate = Color(10, 10, 10, 1)
 		icon.modulate = Color(10, 10, 10, 1)
+func update_stats_text():
+	update_health_bar()
+	update_grenade_text()
+	update_laser_text()
