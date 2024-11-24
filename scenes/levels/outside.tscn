@@ -7,9 +7,9 @@
 [ext_resource type="Texture2D" uid="uid://cn3hj1n2mxy66" path="res://graphics/tilesets/soil.png" id="5_eggcb"]
 [ext_resource type="PackedScene" uid="uid://drvlabsgoj5lq" path="res://scenes/Textures/house.tscn" id="6_s5bds"]
 [ext_resource type="PackedScene" uid="uid://b1es6m1f4xrm1" path="res://scenes/Enemies/drone.tscn" id="7_0dc0c"]
-[ext_resource type="PackedScene" uid="uid://xv748om60bxx" path="res://scenes/objects/crate.tscn" id="7_hqtax"]
 [ext_resource type="PackedScene" uid="uid://qjbvaw1v02k3" path="res://scenes/Items/grenade_restock.tscn" id="8_c8yrt"]
 [ext_resource type="PackedScene" uid="uid://ds8r7sj4rwxsb" path="res://scenes/objects/toilet.tscn" id="8_tf2w2"]
+[ext_resource type="PackedScene" uid="uid://ucirmgk2hi8w" path="res://scenes/objects/box.tscn" id="8_vk5je"]
 [ext_resource type="PackedScene" uid="uid://kml11esid31u" path="res://scenes/objects/bunker.tscn" id="11_p2ijh"]
 [ext_resource type="PackedScene" uid="uid://b1eovbklbpbfr" path="res://scenes/Items/item.tscn" id="12_x61te"]
 
@@ -119,12 +119,23 @@ layer_1/tile_data = PackedInt32Array(-262153, 65536, 1, -262152, 65536, 0, -2621
 [node name="House" parent="Ground" index="2" instance=ExtResource("6_s5bds")]
 position = Vector2(823, 760)
 
-[node name="Crate" parent="Ground" index="3" instance=ExtResource("7_hqtax")]
-position = Vector2(-494, -2069)
-scale = Vector2(1.63992, 1.5978)
-
-[node name="Toilet" parent="Ground" index="4" instance=ExtResource("8_tf2w2")]
+[node name="Toilet" parent="Ground" index="3" instance=ExtResource("8_tf2w2")]
 position = Vector2(250, -1400)
+
+[node name="Box" parent="Ground" index="4" instance=ExtResource("8_vk5je")]
+position = Vector2(-594, -2142)
+
+[node name="Box2" parent="Ground" index="5" instance=ExtResource("8_vk5je")]
+position = Vector2(1209, -1822)
+rotation = 1.57079
+
+[node name="Box3" parent="Ground" index="6" instance=ExtResource("8_vk5je")]
+position = Vector2(1133, -627)
+rotation = 2.68563
+
+[node name="Box4" parent="Ground" index="7" instance=ExtResource("8_vk5je")]
+position = Vector2(-632, -681)
+rotation = 3.92699
 
 [node name="Drone" parent="." index="3" instance=ExtResource("7_0dc0c")]
 position = Vector2(399, -827)
@@ -137,18 +148,18 @@ collision_layer = 32
 position = Vector2(-2462, -122)
 rotation = -1.57079
 
-[node name="Player" parent="." index="6"]
-position = Vector2(-207, 590)
-rotation = -0.688345
-
 [node name="Item" parent="." index="7" instance=ExtResource("12_x61te")]
-position = Vector2(-665, -70)
+position = Vector2(-1276, 672)
 
 [node name="Item2" parent="." index="8" instance=ExtResource("12_x61te")]
 position = Vector2(-289, -75)
 
 [node name="Item3" parent="." index="9" instance=ExtResource("12_x61te")]
-position = Vector2(93, -84)
+position = Vector2(374, 443)
+
+[node name="Player" parent="." index="10"]
+position = Vector2(27.0001, 776)
+rotation = -0.688345
 
 [connection signal="body_entered" from="Ground/House" to="." method="_on_house_body_entered"]
 [connection signal="body_exited" from="Ground/House" to="." method="_on_house_body_exited"]

@@ -9,6 +9,8 @@ script = ExtResource("1_8k674")
 
 [node name="Ground" type="Node2D" parent="."]
 
+[node name="Items" type="Node2D" parent="."]
+
 [node name="Projectiles" type="Node" parent="."]
 
 [node name="UI" parent="." instance=ExtResource("3_ov1el")]

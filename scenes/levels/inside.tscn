@@ -337,7 +337,7 @@ scale = Vector2(1.786, 1.642)
 position = Vector2(-6445, 277)
 scale = Vector2(5.061, 4.401)
 
-[node name="Player" parent="." index="6"]
+[node name="Player" parent="." index="7"]
 position = Vector2(2589, 227)
 metadata/_edit_lock_ = true
 
