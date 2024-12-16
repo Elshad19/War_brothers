@@ -1,5 +1,7 @@
 extends Node
 signal update_ui_stats
+#position
+var player_position: Vector2
 #health
 var player_health: int = 50:
 	set(value):
