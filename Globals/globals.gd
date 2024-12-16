@@ -6,6 +6,10 @@ var player_health: int = 50:
 		player_health = value
 		update_ui_stats.emit()
 var max_player_health: int = 100
+func _process(delta):
+	if player_health <= 0:
+		print("The player is dead!")
+		pass
 #laser
 var player_laser_amount: int = 20:
 	set(value):

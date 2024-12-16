@@ -20,6 +20,9 @@ func _ready():
 	$Flashlight.enabled = false
 	pass
 
+func hit():
+	Globals.player_health = Globals.player_health - 5
+
 func _process(_delta):
 	#input
 	var direction = Input.get_vector("left", "right", "up", "down")
