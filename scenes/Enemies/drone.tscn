@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://b1es6m1f4xrm1"]
+[gd_scene load_steps=10 format=3 uid="uid://b1es6m1f4xrm1"]
 
 [ext_resource type="Texture2D" uid="uid://qykmtb4qnroh" path="res://graphics/enemies/drone.png" id="1_o1a8k"]
 [ext_resource type="Texture2D" uid="uid://cm73wfh0kt2uh" path="res://graphics/explosions/explosion_2.png" id="2_qfi0a"]
@@ -8,19 +8,39 @@
 script/source = "extends CharacterBody2D
 @export var health = 100
 @onready var anim = $Destroyed
+var enemy_spotted: bool = false
+var can_shoot: bool = true
+var entity_direction
+signal laser_signal(selected_laser_marker, entity_direction)
+signal laser_particle_signal(selected_laser_marker, entity_direction)
 func _process(_delta):
-	var direction = Vector2.RIGHT
-	velocity = direction * 200
-	move_and_slide()
+	if enemy_spotted == true:
+		look_at(Globals.player_position)
+		if can_shoot == true:
+			var selected_laser_marker = $Markers/Marker2D.global_position
+			entity_direction = (Globals.player_position - position).normalized
+			laser_signal.emit(selected_laser_marker, entity_direction)
+			laser_particle_signal.emit(selected_laser_marker, entity_direction)
+			can_shoot = false
+			$LaserTimer.start()
 	if health > 0:
 		$Destroyed2.visible = false
 		$PointLight2D.enabled = false
 func hit():
-	print(\"enemy damaged\")
+	print(\"Enemy damaged\")
 	if health == 0 or health < 0:
 		$Destroyed2.visible = true
 		$PointLight2D.enabled = true
 		$Destroyed.play(&\"Destroyed\")
+
+
+func _on_attack_range_body_entered(body):
+	enemy_spotted = true
+func _on_attack_range_body_exited(body):
+	enemy_spotted = true
+
+func _on_laser_timer_timeout():
+	can_shoot = true
 "
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wkluh"]
@@ -125,13 +145,16 @@ _data = {
 "RESET": SubResource("Animation_1y1py")
 }
 
-[node name="Drone" type="CharacterBody2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_6qyjq"]
+radius = 1420.12
+
+[node name="Drone" type="CharacterBody2D" groups=["Drones"]]
 collision_layer = 2
 collision_mask = 15
 script = SubResource("GDScript_p7yrp")
 
 [node name="DroneImage" type="Sprite2D" parent="."]
-position = Vector2(-1, -5)
+rotation = 1.5708
 texture = ExtResource("1_o1a8k")
 
 [node name="DroneCollision" type="CollisionShape2D" parent="."]
@@ -154,3 +177,22 @@ frame = 27
 [node name="PointLight2D" type="PointLight2D" parent="."]
 color = Color(0.71902, 0.366843, 0.033562, 1)
 texture = ExtResource("3_nnecw")
+
+[node name="Markers" type="Node2D" parent="."]
+
+[node name="Marker2D" type="Marker2D" parent="Markers"]
+position = Vector2(68, 28)
+
+[node name="Marker2D2" type="Marker2D" parent="Markers"]
+position = Vector2(69, -26)
+
+[node name="LaserTimer" type="Timer" parent="."]
+
+[node name="AttackRange" type="Area2D" parent="."]
+
+[node name="Range" type="CollisionShape2D" parent="AttackRange"]
+shape = SubResource("CircleShape2D_6qyjq")
+
+[connection signal="timeout" from="LaserTimer" to="." method="_on_laser_timer_timeout"]
+[connection signal="body_entered" from="AttackRange" to="." method="_on_attack_range_body_entered"]
+[connection signal="body_exited" from="AttackRange" to="." method="_on_attack_range_body_exited"]
