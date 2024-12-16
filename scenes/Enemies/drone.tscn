@@ -10,17 +10,19 @@ script/source = "extends CharacterBody2D
 @onready var anim = $Destroyed
 var enemy_spotted: bool = false
 var can_shoot: bool = true
-var entity_direction
-signal laser_signal(selected_laser_marker, entity_direction)
-signal laser_particle_signal(selected_laser_marker, entity_direction)
+var right_gun_use = true
+signal laser_signal(pos, entity_direction)
+signal laser_particle_signal(pos, entity_direction)
 func _process(_delta):
 	if enemy_spotted == true:
 		look_at(Globals.player_position)
 		if can_shoot == true:
-			var selected_laser_marker = $Markers/Marker2D.global_position
-			entity_direction = (Globals.player_position - position).normalized
-			laser_signal.emit(selected_laser_marker, entity_direction)
-			laser_particle_signal.emit(selected_laser_marker, entity_direction)
+			var selected_laser_marker = $Markers.get_child(right_gun_use)
+			right_gun_use = not right_gun_use
+			var entity_direction = (Globals.player_position - position).normalized()
+			var pos = selected_laser_marker.global_position
+			laser_signal.emit(pos, entity_direction)
+			laser_particle_signal.emit(pos, entity_direction)
 			can_shoot = false
 			$LaserTimer.start()
 	if health > 0:
@@ -158,6 +160,7 @@ rotation = 1.5708
 texture = ExtResource("1_o1a8k")
 
 [node name="DroneCollision" type="CollisionShape2D" parent="."]
+position = Vector2(-6, 1)
 shape = SubResource("CircleShape2D_wkluh")
 
 [node name="Destroyed" type="AnimationPlayer" parent="."]
@@ -179,19 +182,23 @@ color = Color(0.71902, 0.366843, 0.033562, 1)
 texture = ExtResource("3_nnecw")
 
 [node name="Markers" type="Node2D" parent="."]
+position = Vector2(20, 0)
 
 [node name="Marker2D" type="Marker2D" parent="Markers"]
-position = Vector2(68, 28)
+position = Vector2(71, 28)
 
 [node name="Marker2D2" type="Marker2D" parent="Markers"]
-position = Vector2(69, -26)
+position = Vector2(73, -26)
 
 [node name="LaserTimer" type="Timer" parent="."]
 
 [node name="AttackRange" type="Area2D" parent="."]
+visible = false
+collision_layer = 16
 
 [node name="Range" type="CollisionShape2D" parent="AttackRange"]
 shape = SubResource("CircleShape2D_6qyjq")
+metadata/_edit_lock_ = true
 
 [connection signal="timeout" from="LaserTimer" to="." method="_on_laser_timer_timeout"]
 [connection signal="body_entered" from="AttackRange" to="." method="_on_attack_range_body_entered"]
