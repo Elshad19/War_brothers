@@ -34,8 +34,7 @@ wait_time = 2.0
 one_shot = true
 
 [node name="Gun_markers" type="Node2D" parent="."]
-position = Vector2(0, -1)
-metadata/_edit_lock_ = true
+position = Vector2(23, 0)
 
 [node name="LaserPos1" type="Marker2D" parent="Gun_markers"]
 position = Vector2(126, 2)
